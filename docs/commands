@@ -1,0 +1,13 @@
+git pull origin main
+
+in new terinimal ,
+cd backend
+
+.\mvnw.cmd spring-boot:run
+
+ in another new terminal, 
+cd frontend , 
+npm run dev
+
+
+
