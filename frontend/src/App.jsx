@@ -11,6 +11,13 @@ import AttendancePage      from "./pages/student/AttendancePage";
 import LeaveODPage         from "./pages/student/LeaveODPage";
 import ProfilePage         from "./pages/student/ProfilePage";
 
+// Faculty pages
+import FacultyDashboard    from "./pages/faculty/Dashboard";
+import ManageAssignments   from "./pages/faculty/ManageAssignments";
+import QuizManager         from "./pages/faculty/QuizManager";
+import UploadMaterials     from "./pages/faculty/UploadMaterials";
+import GradeCenter         from "./pages/faculty/GradeCenter";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ProtectedRoute
 // ─────────────────────────────────────────────────────────────────────────────
@@ -67,8 +74,12 @@ function RootRedirect() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Student route wrapper — DRY helper
+// Faculty route wrapper — DRY helper
 // ─────────────────────────────────────────────────────────────────────────────
+function F({ element }) {
+  return <ProtectedRoute role="faculty">{element}</ProtectedRoute>;
+}
+
 function S({ element }) {
   return <ProtectedRoute role="student">{element}</ProtectedRoute>;
 }
@@ -98,8 +109,14 @@ export default function App() {
         <Route path="/student/leave"         element={<S element={<LeaveODPage />}       />} />
         <Route path="/student/profile"       element={<S element={<ProfilePage />}       />} />
 
-        {/* ── Faculty / Admin / Coordinator ── */}
-        <Route path="/faculty/dashboard"     element={<ProtectedRoute role="faculty">     <PlaceholderPage title="Faculty Dashboard" />     </ProtectedRoute>} />
+        {/* ── Faculty ── */}
+        <Route path="/faculty/dashboard"     element={<F element={<FacultyDashboard />}  />} />
+        <Route path="/faculty/assignments"   element={<F element={<ManageAssignments />} />} />
+        <Route path="/faculty/quizzes"       element={<F element={<QuizManager />}       />} />
+        <Route path="/faculty/materials"     element={<F element={<UploadMaterials />}   />} />
+        <Route path="/faculty/grades"        element={<F element={<GradeCenter />}       />} />
+
+        {/* ── Admin / Coordinator ── */}
         <Route path="/admin/dashboard"       element={<ProtectedRoute role="admin">       <PlaceholderPage title="Admin Dashboard" />       </ProtectedRoute>} />
         <Route path="/coordinator/dashboard" element={<ProtectedRoute role="coordinator"> <PlaceholderPage title="Coordinator Dashboard" /> </ProtectedRoute>} />
 

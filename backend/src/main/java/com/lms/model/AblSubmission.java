@@ -39,4 +39,6 @@ public class AblSubmission {
 
     @Column(name = "grading_status")
     private String gradingStatus;   // "Pending" | "Graded"
+
+    private String feedback;
 }

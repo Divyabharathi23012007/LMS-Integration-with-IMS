@@ -4,6 +4,8 @@ import Sidebar  from "../../components/Sidebar/Sidebar.jsx";
 import Navbar   from "../../components/Navbar/Navbar.jsx";
 import Cards    from "../../components/Cards/Cards.jsx";
 import Calendar from "../../components/Calendar/Calendar.jsx";
+import TourGuide, { useTour } from "../../components/Tour/TourGuide.jsx";
+import { tourService, startTourForRoute } from "../../services/tourService.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -163,7 +165,7 @@ function ProfileDropdown({ profile, regNo, onViewProfile, onClose }) {
       borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.12)", zIndex: 200, overflow: "hidden",
     }}>
       <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--border)" }}>
-        <p style={{ fontWeight: 700, fontSize: 14, color: "var(--text)", margin: 0 }}>{profile?.name ?? "Student"}</p>
+        <p style={{ fontWeight: 700, fontSize: 14, color: "var(--text)" }}>{profile?.name ?? "Student"}</p>
         <p style={{ fontSize: 11, color: "var(--text-muted)", margin: "3px 0 0" }}>{profile?.regNo ?? regNo}</p>
       </div>
       <div style={{ padding: 8 }}>
@@ -306,12 +308,12 @@ function HomeSection({ courses, attendance, assignments, marks, timetable, annou
         )}
 
         {/* 3 Stat Cards */}
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20 }} data-tour="stat-cards">
           <Cards cards={statCards} />
         </div>
 
         {/* Marks Snapshot */}
-        <div style={{ ...card, marginBottom: 20 }}>
+        <div style={{ ...card, marginBottom: 20 }} data-tour="marks-snapshot">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
             <h3 style={{ fontWeight: 700, fontSize: 15, color: "var(--text)", margin: 0 }}>Marks Snapshot</h3>
             <a href="#" onClick={e => { e.preventDefault(); onNav("marks"); }} style={{ fontSize: 12, fontWeight: 600, color: "#0d7ff2", textDecoration: "none" }}>See All →</a>
@@ -340,7 +342,7 @@ function HomeSection({ courses, attendance, assignments, marks, timetable, annou
         </div>
 
         {/* Enrolled Courses */}
-        <div style={{ ...card, marginBottom: 20 }}>
+        <div style={{ ...card, marginBottom: 20 }} data-tour="enrolled-courses">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <h3 style={{ fontWeight: 700, fontSize: 15, color: "var(--text)", margin: 0 }}>Enrolled Courses</h3>
             <span style={{ fontSize: 11, color: "var(--text-muted)", background: "var(--border-light)", padding: "3px 10px", borderRadius: 20, fontWeight: 600 }}>
@@ -451,13 +453,13 @@ function HomeSection({ courses, attendance, assignments, marks, timetable, annou
       <div className="home-aside">
 
         {/* Calendar */}
-        <div style={card}>
+        <div style={card} data-tour="calendar">
           <h3 style={{ fontWeight: 700, fontSize: 13, color: "var(--text)", margin: "0 0 12px" }}>Calendar</h3>
           <Calendar assignments={assignments} />
         </div>
 
         {/* Pending Assignments */}
-        <div style={card}>
+        <div style={card} data-tour="pending-assignments">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
             <span style={{ fontWeight: 700, fontSize: 13, color: "var(--text)" }}>Pending Assignments</span>
             <a href="#" onClick={e => { e.preventDefault(); onNav("assignments"); }} style={{ fontSize: 12, fontWeight: 600, color: "#0d7ff2", textDecoration: "none" }}>See All →</a>
@@ -558,6 +560,10 @@ export default function StudentDashboard() {
   const [showNotifDropdown,   setShowNotifDropdown]   = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
+  // Tour functionality
+  const { isOpen: isTourOpen, startTour, closeTour, completeTour, resetTour } = useTour();
+  const [tourSteps, setTourSteps] = useState([]);
+
   // Theme
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -599,6 +605,36 @@ export default function StudentDashboard() {
     })();
     return () => controller.abort(); // cleanup on unmount / StrictMode second call
   }, [regNo]);
+
+  // Initialize tour on component mount
+  useEffect(() => {
+    if (!loading) {
+      const tourConfig = startTourForRoute('/student/dashboard', 'student');
+      if (tourConfig && !tourService.tourHistory[tourConfig.id]) {
+        setTourSteps(tourConfig.steps);
+        // Auto-start tour for first-time users
+        setTimeout(() => startTour(), 1000);
+      }
+    }
+  }, [loading, startTour]);
+
+  // Handle tour trigger from sidebar
+  useEffect(() => {
+    const handleStartTour = (event) => {
+      const { tourId } = event.detail;
+      if (tourId === 'student-dashboard') {
+        const tourConfig = startTourForRoute('/student/dashboard', 'student');
+        if (tourConfig) {
+          setTourSteps(tourConfig.steps);
+          resetTour('student-dashboard'); // Reset to allow retaking tour
+          setTimeout(() => startTour(), 100);
+        }
+      }
+    };
+
+    window.addEventListener('start-tour', handleStartTour);
+    return () => window.removeEventListener('start-tour', handleStartTour);
+  }, [startTour, resetTour]);
 
   // home/profile → in-dashboard section switch
   // all other keys → navigate to their own page
@@ -700,6 +736,7 @@ export default function StudentDashboard() {
         onSignOut={() => { sessionStorage.clear(); window.location.href = "/login"; }}
         mobileOpen={mobileSidebar}
         onMobileClose={() => setMobileSidebar(false)}
+        data-tour="sidebar"
       />
 
       {/* Main */}
@@ -749,6 +786,16 @@ export default function StudentDashboard() {
           }
         </main>
       </div>
+
+      {/* Tour Guide */}
+      <TourGuide
+        steps={tourSteps}
+        isOpen={isTourOpen}
+        onClose={closeTour}
+        onComplete={() => {
+          completeTour('student-dashboard');
+        }}
+      />
     </div>
   );
 }

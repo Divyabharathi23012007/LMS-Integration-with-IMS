@@ -76,7 +76,7 @@ export default function Navbar({
           <Ic n="menu" size={20} color="var(--text-muted)" />
         </button>
       <div>
-        <h1 style={{ fontWeight: 800, fontSize: 20, color: "var(--text)", margin: 0, letterSpacing: "-0.4px" }}>
+        <h1 style={{ fontWeight: 800, fontSize: 20, color: "var(--text)", margin: 0, letterSpacing: "-0.4px" }} data-tour="greeting">
           {greet}, {firstName} 👋
         </h1>
         {profile && (
@@ -97,8 +97,19 @@ export default function Navbar({
           <Ic n={dark ? "light_mode" : "dark_mode"} size={18} color="var(--text-muted)" />
         </button>
 
+        {/* Tour button */}
+        <button
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent('start-tour', { detail: { tourId: 'student-dashboard' } }));
+          }}
+          style={iconBtn}
+          title="Take a tour"
+        >
+          <Ic n="tour" size={18} color="var(--text-muted)" />
+        </button>
+
         {/* Notification bell */}
-        <button onClick={onNotificationClick} style={{ ...iconBtn, position: "relative" }}>
+        <button onClick={onNotificationClick} style={{ ...iconBtn, position: "relative" }} data-tour="notifications">
           <Ic n="notifications" size={18} color="var(--text-muted)" />
           {unreadCount > 0 && (
             <span style={{

@@ -10,4 +10,5 @@ import com.lms.model.AblSubmission;
 public interface AblSubmissionRepository extends JpaRepository<AblSubmission, Integer> {
     Optional<AblSubmission> findByAblIdAndStudentRegNo(Integer ablId, String studentRegNo);
     List<AblSubmission> findByStudentRegNoAndAblIdIn(String studentRegNo, List<Integer> ablIds);
+    List<AblSubmission> findByAblId(Integer ablId);
 }

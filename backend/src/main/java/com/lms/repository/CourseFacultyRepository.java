@@ -10,4 +10,5 @@ import com.lms.model.CourseFaculty;
 public interface CourseFacultyRepository extends JpaRepository<CourseFaculty, Integer> {
     Optional<CourseFaculty> findByCourseId(Integer courseId);
     List<CourseFaculty> findByCourseIdIn(List<Integer> courseIds);
+    List<CourseFaculty> findByFacultyId(String facultyId);
 }

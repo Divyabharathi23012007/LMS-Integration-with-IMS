@@ -11,8 +11,8 @@ function Ic({ n, fill = 0, size = 20, color }) {
 /**
  * Props:
  *  navItems      — array of { key, label, icon }
- *  activeSection — "home" | "profile"  (only these two are ever active)
- *  onNav(key)    — called ONLY for "home" and "profile" clicks
+ *  activeSection — current active section key for item highlighting
+ *  onNav(key)    — called when a nav item is clicked
  *  profile       — { name, regNo }
  *  onSignOut()
  *  mobileOpen    — boolean, sidebar visible on mobile
@@ -28,7 +28,7 @@ export default function Sidebar({ navItems = [], activeSection, onNav, profile, 
           onClick={onMobileClose}
           style={{
             position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)",
-            zIndex: 40, display: "none",
+            zIndex: 40,
           }}
           className="sidebar-backdrop"
         />

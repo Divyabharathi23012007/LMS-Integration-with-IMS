@@ -1,8 +1,16 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Faculty pages should use full viewport */
+.faculty-layout #root {
+  padding: 0;
+  max-width: none;
+  margin: 0;
+  text-align: left;
 }
 
 .logo {

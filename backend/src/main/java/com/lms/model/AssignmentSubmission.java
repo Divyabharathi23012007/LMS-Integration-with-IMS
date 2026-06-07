@@ -36,4 +36,6 @@ public class AssignmentSubmission {
 
     @Column(name = "grading_status")
     private String gradingStatus; // pending, graded
+
+    private String feedback;
 }

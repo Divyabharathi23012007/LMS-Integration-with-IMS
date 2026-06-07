@@ -28,4 +28,7 @@ public class Quiz {
 
     @Column(name = "timer")
     private Integer timer;
+
+    @Column(name = "created_by")
+    private String createdBy;
 }

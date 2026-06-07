@@ -10,4 +10,5 @@ import com.lms.model.AssignmentSubmission;
 public interface AssignmentSubmissionRepository extends JpaRepository<AssignmentSubmission, Integer> {
     Optional<AssignmentSubmission> findByAssignmentIdAndStudentRegNo(Integer assignmentId, String studentRegNo);
     List<AssignmentSubmission> findByStudentRegNoAndAssignmentIdIn(String studentRegNo, List<Integer> assignmentIds);
+    List<AssignmentSubmission> findByAssignmentId(Integer assignmentId);
 }
