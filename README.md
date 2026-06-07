@@ -12,7 +12,7 @@
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
-- [Team](#team)
+
 
 ---
 
@@ -57,30 +57,7 @@ This platform eliminates the need for multiple disconnected systems by bringing 
 
 ---
 
-## 📁 Project Structure
 
-```
-lms/
-├── backend/
-│   └── src/main/java/com/lms/
-│       ├── GateInsightsController.java
-│       ├── GateInsightsService.java
-│       └── ...
-├── frontend/
-│   └── src/
-│       ├── components/
-│       │   └── Tour/
-│       │       └── TourGuide.jsx
-│       ├── pages/
-│       │   └── faculty/
-│       │       └── Layout.jsx
-│       └── services/
-│           ├── facultyService.js
-│           └── tourService.js
-└── README.md
-```
-
----
 
 ## 🚀 Getting Started
 
@@ -126,8 +103,8 @@ In `backend/src/main/resources/application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/rit_lms
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+spring.datasource.username=
+spring.datasource.password=
 ```
 
 In `frontend/.env`:
