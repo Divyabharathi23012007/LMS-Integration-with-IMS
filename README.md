@@ -136,24 +136,5 @@ In `frontend/.env`:
 REACT_APP_API_BASE_URL=http://localhost:8080
 ```
 
----
 
-## 👥 Team
 
-**Stack Hackers** — Developed as part of an academic project at Rajalakshmi Institute of Technology.
-
-| Name | Role |
-|---|---|
-| Divyabharathi | Full Stack Developer |
-|  | Add teammate names |
-
-**Department:** Computer Science and Engineering
-**Institution:** Rajalakshmi Institute of Technology, Chennai
-**Affiliated to:** Anna University
-
----
-
-## 📄 License
-
-This project is developed for academic purposes at Rajalakshmi Institute of Technology.
-© 2024–2025 Stack Hackers. All rights reserved.
